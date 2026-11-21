@@ -100,6 +100,29 @@
         $('callTimer').textContent = '00:00';
     }
 
+    // Browsers (especially phones) can block audio playback for a remote
+    // track that subscribes while playback is locked — that track then stays
+    // silent until startAudio() runs again, so only the newest joiner is
+    // heard. Retry the unlock on every tap and on every new audio track.
+    let audioUnlockAt = 0;
+    let audioUnlockListenersBound = false;
+    function unlockAudio() {
+        if (!room) return;
+        const now = Date.now();
+        if (now - audioUnlockAt < 1500) return; // avoid retry loops
+        audioUnlockAt = now;
+        room.startAudio().catch(() => {
+            // Still blocked — the next tap retries it.
+        });
+    }
+    function bindAudioUnlockListeners() {
+        if (audioUnlockListenersBound) return;
+        audioUnlockListenersBound = true;
+        ['pointerdown', 'touchend'].forEach((eventName) => {
+            document.addEventListener(eventName, unlockAudio, { passive: true });
+        });
+    }
+
     function getOrCreateIdentity() {
         try {
             const stored = window.sessionStorage.getItem('am-identity');
@@ -536,6 +559,10 @@
             room.on(SDK.RoomEvent.TrackSubscribed, (track, publication, participant) => {
                 attachTrack(track, participant);
                 refreshTileMic(participant);
+                // A track that subscribes while playback is blocked stays
+                // silent until startAudio() runs again — retry it right
+                // away so the newest joiner isn't the only one heard.
+                if (track.kind === SDK.Track.Kind.Audio) unlockAudio();
             });
             room.on(SDK.RoomEvent.TrackUnsubscribed, (track, publication, participant) => {
                 detachTrack(track, participant);
@@ -582,6 +609,11 @@
             room.on(SDK.RoomEvent.ActiveSpeakersChanged, (speakers) => {
                 markSpeaking(speakers.map((p) => p.identity));
             });
+            // If the browser blocks audio playback, tell the user a tap
+            // fixes it — the tap listener retries the unlock.
+            room.on(SDK.RoomEvent.AudioPlaybackStatusChanged, (playing) => {
+                if (!playing) showToast('Tap anywhere to turn the sound on.');
+            });
             room.on(SDK.RoomEvent.ConnectionStateChanged, (state) => {
                 const status = $('connectionStatus');
                 status.className = 'lk-status';
@@ -589,6 +621,23 @@
                     status.classList.add('lk-status-ok');
                     status.title = 'Connected';
                     $('reconnectBanner').hidden = true;
+                    // After a reconnect, a local track stopped during the
+                    // drop stays stopped even though the mic/camera still
+                    // look on — re-enable it so your voice keeps going out.
+                    const micPub = room.localParticipant.getTrackPublication(SDK.Track.Source.Microphone);
+                    if (
+                        room.localParticipant.isMicrophoneEnabled &&
+                        (!micPub || !micPub.track || micPub.track.mediaStreamTrack.readyState === 'ended')
+                    ) {
+                        room.localParticipant.setMicrophoneEnabled(true, MIC_OPTIONS).catch(() => {});
+                    }
+                    const camPub = room.localParticipant.getTrackPublication(SDK.Track.Source.Camera);
+                    if (
+                        room.localParticipant.isCameraEnabled &&
+                        (!camPub || !camPub.track || camPub.track.mediaStreamTrack.readyState === 'ended')
+                    ) {
+                        room.localParticipant.setCameraEnabled(true).catch(() => {});
+                    }
                 } else if (state === SDK.ConnectionState.Reconnecting) {
                     status.classList.add('lk-status-warn');
                     status.title = 'Reconnecting';
@@ -623,6 +672,10 @@
             } catch (err) {
                 // Same as above.
             }
+            // From here on, any tap anywhere retries the audio unlock —
+            // that is what keeps every joiner's voice audible, not just
+            // the newest one.
+            bindAudioUnlockListeners();
 
             // Publish local camera/mic. A denied permission joins muted
             // instead of failing the whole join.
