@@ -1,0 +1,3 @@
+# Secrets and local state — never commit or ship these.
+.env
+node_modules/

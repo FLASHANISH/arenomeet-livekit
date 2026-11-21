@@ -1,0 +1,615 @@
+/* ArenaMeet — LiveKit room page styles.
+ * Uses the ArenaMeet palette from Root.css:
+ * background #090D12, panel #101720, card #121B26, accent #12C8E8,
+ * text #F5F7FA, muted #929DAC, danger #EF4444, success #22C55E.
+ */
+
+.lk-room {
+    background: var(--body-bg);
+    color: var(--am-text);
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* ------------------------------------------------------------------ */
+/* Header                                                              */
+/* ------------------------------------------------------------------ */
+
+.lk-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 10px 18px;
+    background: var(--am-panel);
+    border-bottom: 1px solid var(--am-border);
+    flex: 0 0 auto;
+    z-index: 10;
+}
+
+.lk-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--am-text);
+    flex: 0 0 auto;
+}
+
+.lk-logo {
+    width: 30px;
+    height: 30px;
+}
+
+.lk-brand-name {
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: 0.02em;
+}
+
+.lk-room-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    flex: 1 1 auto;
+    color: var(--am-muted);
+    font-size: 14px;
+}
+
+.lk-room-name {
+    color: var(--am-text);
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 320px;
+}
+
+.lk-sep {
+    opacity: 0.4;
+}
+
+.lk-participants,
+.lk-timer {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.lk-timer {
+    font-variant-numeric: tabular-nums;
+}
+
+.lk-status {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--am-muted);
+    flex: 0 0 auto;
+}
+
+.lk-status-ok {
+    background: var(--am-success);
+}
+
+.lk-status-warn {
+    background: var(--am-warning);
+}
+
+.lk-status-bad {
+    background: var(--am-danger);
+}
+
+.lk-header-actions {
+    display: flex;
+    gap: 8px;
+    flex: 0 0 auto;
+}
+
+.lk-header-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--am-border);
+    background: var(--am-panel-2);
+    color: var(--am-text);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.lk-header-btn:hover {
+    border-color: var(--am-accent);
+}
+
+/* ------------------------------------------------------------------ */
+/* Stage + video grid                                                  */
+/* ------------------------------------------------------------------ */
+
+.lk-stage {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    padding: 16px 16px 96px;
+    overflow-y: auto;
+}
+
+.lk-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.lk-grid:has(.lk-tile:only-child) {
+    grid-template-columns: minmax(280px, 900px);
+    justify-content: center;
+}
+
+.lk-tile {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--am-panel-2);
+    border: 1px solid var(--am-border);
+}
+
+.lk-tile.lk-speaking {
+    border-color: var(--am-accent);
+    box-shadow: 0 0 0 2px rgba(18, 200, 232, 0.45);
+}
+
+.lk-tile-screen {
+    grid-column: 1 / -1;
+    aspect-ratio: 16 / 9;
+}
+
+.lk-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: #000;
+    display: block;
+}
+
+.lk-cam-off .lk-video {
+    display: none;
+}
+
+.lk-avatar {
+    position: absolute;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 56px;
+    font-weight: 700;
+    color: var(--am-text);
+    background: linear-gradient(135deg, #101720, #1a2a3a);
+}
+
+.lk-cam-off .lk-avatar {
+    display: flex;
+}
+
+.lk-tile-label {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 10px;
+    border-radius: 8px;
+    background: rgba(9, 13, 18, 0.72);
+    font-size: 13px;
+    font-weight: 600;
+    max-width: calc(100% - 20px);
+}
+
+.lk-tile-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.lk-tile-mic {
+    color: var(--am-text);
+    opacity: 0.9;
+}
+
+.lk-tile-mic.lk-muted {
+    color: var(--am-danger);
+}
+
+.lk-alone-hint {
+    text-align: center;
+    color: var(--am-muted);
+    margin: 24px auto 0;
+    max-width: 520px;
+    font-size: 14px;
+}
+
+.lk-banner {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 8px 16px;
+    border-radius: 10px;
+    background: var(--am-warning);
+    color: #111;
+    font-size: 13px;
+    font-weight: 600;
+    z-index: 20;
+}
+
+/* ------------------------------------------------------------------ */
+/* Chat panel                                                          */
+/* ------------------------------------------------------------------ */
+
+.lk-chat {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(340px, 92vw);
+    display: flex;
+    flex-direction: column;
+    background: var(--am-panel);
+    border-left: 1px solid var(--am-border);
+    z-index: 30;
+}
+
+.lk-chat-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--am-border);
+    font-weight: 700;
+}
+
+.lk-chat-close {
+    background: none;
+    border: none;
+    color: var(--am-muted);
+    font-size: 16px;
+    cursor: pointer;
+    padding: 4px 8px;
+}
+
+.lk-chat-close:hover {
+    color: var(--am-text);
+}
+
+.lk-chat-messages {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.lk-chat-msg {
+    background: var(--am-panel-2);
+    border: 1px solid var(--am-border);
+    border-radius: 10px;
+    padding: 8px 12px;
+    max-width: 100%;
+}
+
+.lk-chat-own {
+    border-color: rgba(18, 200, 232, 0.4);
+}
+
+.lk-chat-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 12px;
+    margin-bottom: 4px;
+}
+
+.lk-chat-name {
+    font-weight: 700;
+}
+
+.lk-chat-time {
+    color: var(--am-muted);
+}
+
+.lk-chat-text {
+    font-size: 14px;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+}
+
+.lk-chat-form {
+    display: flex;
+    gap: 8px;
+    padding: 12px;
+    border-top: 1px solid var(--am-border);
+}
+
+.lk-chat-form input {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--am-border);
+    background: var(--am-panel-2);
+    color: var(--am-text);
+    font: inherit;
+    font-size: 14px;
+    outline: none;
+}
+
+.lk-chat-form input:focus {
+    border-color: var(--am-accent);
+}
+
+.lk-chat-form button {
+    flex: 0 0 auto;
+    width: 42px;
+    border: none;
+    border-radius: 10px;
+    background: var(--am-accent);
+    color: #04222b;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+/* ------------------------------------------------------------------ */
+/* Bottom controls                                                     */
+/* ------------------------------------------------------------------ */
+
+.lk-controls {
+    position: fixed;
+    left: 50%;
+    bottom: 18px;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 16px;
+    background: rgba(16, 23, 32, 0.92);
+    border: 1px solid var(--am-border);
+    box-shadow: 0 18px 52px rgba(0, 0, 0, 0.42);
+    z-index: 20;
+}
+
+.lk-control {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid var(--am-border);
+    background: var(--am-panel-2);
+    color: var(--am-text);
+    font-size: 17px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lk-control:hover {
+    border-color: var(--am-accent);
+}
+
+.lk-control.lk-off {
+    background: var(--am-danger);
+    border-color: var(--am-danger);
+    color: #fff;
+}
+
+.lk-control.lk-leave {
+    background: var(--am-danger);
+    border-color: var(--am-danger);
+    color: #fff;
+}
+
+/* ------------------------------------------------------------------ */
+/* Join / left overlays                                                */
+/* ------------------------------------------------------------------ */
+
+.lk-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(9, 13, 18, 0.88);
+    z-index: 40;
+}
+
+/* The `hidden` attribute must win over the display:flex above, otherwise
+   the left-room overlay shows on first load and covers the join form. */
+.lk-overlay[hidden] {
+    display: none;
+}
+
+/* Same `hidden`-vs-display trap for the chat panel: .lk-chat sets
+   display:flex, which would keep the panel visible (and its Close button
+   useless) even while hidden. */
+.lk-chat[hidden] {
+    display: none;
+}
+
+.lk-join-card {
+    width: min(420px, 100%);
+    padding: 28px;
+    border-radius: 14px;
+    background: var(--am-panel);
+    border: 1px solid var(--am-border);
+    box-shadow: 0 18px 52px rgba(0, 0, 0, 0.42);
+    text-align: center;
+}
+
+.lk-join-logo {
+    width: 52px;
+    height: 52px;
+    margin-bottom: 8px;
+}
+
+.lk-join-title {
+    margin: 0 0 4px;
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.lk-join-room {
+    color: var(--am-muted);
+    font-size: 14px;
+    margin: 0 0 18px;
+    overflow-wrap: anywhere;
+}
+
+.lk-join-room strong {
+    color: var(--am-text);
+}
+
+.lk-field {
+    display: block;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--am-muted);
+    margin-bottom: 6px;
+}
+
+.lk-join-card input[type='text'] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--am-border);
+    background: var(--am-panel-2);
+    color: var(--am-text);
+    font: inherit;
+    font-size: 15px;
+    outline: none;
+}
+
+.lk-join-card input[type='text']:focus {
+    border-color: var(--am-accent);
+}
+
+.lk-join-toggles {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 16px 0;
+    font-size: 14px;
+}
+
+.lk-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.lk-toggle input {
+    accent-color: var(--am-accent);
+    width: 16px;
+    height: 16px;
+}
+
+.lk-join-btn {
+    width: 100%;
+    padding: 13px;
+    border: none;
+    border-radius: 10px;
+    background: var(--am-accent);
+    color: #04222b;
+    font: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.lk-join-btn:hover {
+    background: var(--am-accent-dark);
+    color: #fff;
+}
+
+.lk-join-btn:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.lk-error {
+    color: var(--am-danger);
+    font-size: 13px;
+    margin: 12px 0 0;
+}
+
+.lk-join-note {
+    color: var(--am-muted);
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 16px 0 0;
+}
+
+.lk-home-link {
+    display: inline-block;
+    margin-top: 14px;
+    color: var(--am-accent);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.lk-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 84px;
+    transform: translateX(-50%);
+    padding: 10px 16px;
+    border-radius: 10px;
+    background: var(--am-panel-2);
+    border: 1px solid var(--am-border);
+    color: var(--am-text);
+    font-size: 14px;
+    z-index: 50;
+    max-width: min(520px, 90vw);
+    text-align: center;
+}
+
+@media (max-width: 640px) {
+    .lk-brand-name,
+    .lk-header-btn span,
+    .lk-sep {
+        display: none;
+    }
+
+    .lk-room-name {
+        max-width: 140px;
+    }
+
+    .lk-stage {
+        padding: 12px 12px 96px;
+    }
+
+    .lk-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .lk-control {
+        width: 44px;
+        height: 44px;
+    }
+}

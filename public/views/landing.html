@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>ArenaMeet - Real-Time Video Meetings</title>
+        <meta
+            name="description"
+            content="ArenaMeet is a real-time video meeting platform that runs entirely in your browser. No account, no download — pick a room name and meet."
+        />
+        <link rel="icon" type="image/svg+xml" href="/images/logo.svg" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap"
+        />
+        <link rel="stylesheet" href="/css/base.css" />
+        <link rel="stylesheet" href="/css/site.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        />
+        <script defer src="/js/site.js"></script>
+    </head>
+    <body class="site">
+        <header class="site-nav">
+            <div class="wrap">
+                <a class="site-brand" href="/">
+                    <img src="/images/logo.svg" alt="ArenaMeet" />
+                    <span>ArenaMeet</span>
+                </a>
+                <nav class="site-links" aria-label="Main navigation">
+                    <a href="#features">Features</a>
+                    <a href="#how-it-works">How it works</a>
+                    <a href="#faq">FAQ</a>
+                    <a href="/privacy">Privacy</a>
+                </nav>
+                <a class="btn btn-primary" href="/newroom"><span class="btn-label-full">Start a Meeting</span><span class="btn-label-short" aria-hidden="true">Start</span></a>
+            </div>
+        </header>
+
+        <main>
+            <section class="hero">
+                <div class="wrap hero-grid">
+                    <div>
+                        <p class="eyebrow">ArenaMeet — Video Meetings</p>
+                        <h1>REAL-TIME VIDEO MEETINGS. <span class="accent">WITHOUT LIMITS.</span></h1>
+                        <p class="hero-sub">
+                            Meet your squad, your class or your team in the browser. No account, no
+                            download, no setup — pick a room name and you are in.
+                        </p>
+                        <form class="room-form" data-room-form autocomplete="off">
+                            <input
+                                type="text"
+                                maxlength="64"
+                                placeholder="Type a room name, e.g. friday-game-night"
+                                aria-label="Room name"
+                            />
+                            <button class="btn btn-primary" type="submit">Start a Meeting</button>
+                            <span class="form-error" hidden></span>
+                        </form>
+                        <p class="form-note">Free to start. Your camera and microphone stay off until you join.</p>
+                    </div>
+                    <div class="hero-preview" aria-label="Meeting preview">
+                        <div class="hero-preview-bar" aria-hidden="true">
+                            <span></span><span></span><span></span>
+                        </div>
+                        <img src="/images/am-mc.png" alt="ArenaMeet meeting room preview" />
+                        <div class="hero-preview-caption">
+                            A meeting room, as your guests will see it — video grid, controls and chat.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="stats" aria-label="At a glance">
+                <div class="wrap stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">100</div>
+                        <div class="stat-label">Concurrent connections per room</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">5,000</div>
+                        <div class="stat-label">Free video minutes every month</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0</div>
+                        <div class="stat-label">Downloads, sign-ups or installs</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">6 hrs</div>
+                        <div class="stat-label">Join token lifetime, refreshed on every join</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section" aria-label="Create a room">
+                <div class="wrap">
+                    <div class="create-panel">
+                        <div>
+                            <h2>Start a meeting in seconds</h2>
+                            <p>
+                                Name your room, share the link, and everyone joins straight from their
+                                browser — on desktop or mobile.
+                            </p>
+                        </div>
+                        <form class="room-form" data-room-form autocomplete="off">
+                            <input
+                                type="text"
+                                maxlength="64"
+                                placeholder="Room name"
+                                aria-label="Room name"
+                            />
+                            <button class="btn btn-primary" type="submit">Create Room</button>
+                            <span class="form-error" hidden></span>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section" id="features" aria-label="Features">
+                <div class="wrap">
+                    <div class="section-head">
+                        <h2>Everything a meeting needs. Nothing it doesn't.</h2>
+                        <p>Built for fast, no-fuss video calls — the core, done properly.</p>
+                    </div>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fa-solid fa-video"></i></div>
+                            <h3>HD video grid</h3>
+                            <p>
+                                Every participant gets a clear tile, with the active speaker highlighted
+                                so you always know who is talking.
+                            </p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fa-solid fa-display"></i></div>
+                            <h3>Screen sharing</h3>
+                            <p>
+                                Share your whole screen or a single window with one click, and stop
+                                sharing the same way.
+                            </p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fa-solid fa-message"></i></div>
+                            <h3>In-call chat</h3>
+                            <p>
+                                Drop links, notes and quick messages in the room chat without leaving
+                                the call.
+                            </p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fa-solid fa-user-slash"></i></div>
+                            <h3>No account needed</h3>
+                            <p>
+                                There is nothing to sign up for. A room link is the only invitation
+                                anyone needs.
+                            </p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fa-solid fa-globe"></i></div>
+                            <h3>Runs in the browser</h3>
+                            <p>
+                                Chrome, Edge, Firefox and Safari on desktop and mobile. Nothing to
+                                install, nothing to update.
+                            </p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fa-solid fa-link"></i></div>
+                            <h3>Rooms by link</h3>
+                            <p>
+                                Every room has its own link. Copy it, send it, and people join with
+                                the name they choose.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section" id="how-it-works" aria-label="How it works">
+                <div class="wrap">
+                    <div class="section-head">
+                        <h2>How it works</h2>
+                        <p>Three steps between you and your meeting.</p>
+                    </div>
+                    <div class="steps">
+                        <div class="step-card">
+                            <div class="step-num">1</div>
+                            <h3>Pick a room name</h3>
+                            <p>Type any name — "friday-game-night", "maths-class", "team-standup".</p>
+                        </div>
+                        <div class="step-card">
+                            <div class="step-num">2</div>
+                            <h3>Share the link</h3>
+                            <p>
+                                Copy the room link from the top of the room and send it to everyone
+                                you want in the call.
+                            </p>
+                        </div>
+                        <div class="step-card">
+                            <div class="step-num">3</div>
+                            <h3>Meet</h3>
+                            <p>
+                                Guests enter their name, allow camera and microphone, and they are in
+                                — video, screen share and chat included.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section" id="faq" aria-label="Frequently asked questions">
+                <div class="wrap">
+                    <div class="section-head">
+                        <h2>Frequently asked questions</h2>
+                        <p>The things people ask before their first meeting.</p>
+                    </div>
+                    <div class="faq-list">
+                        <div class="faq-item">
+                            <button class="faq-q" type="button" aria-expanded="false">
+                                Do I need an account to use ArenaMeet?
+                                <span class="faq-mark" aria-hidden="true">+</span>
+                            </button>
+                            <div class="faq-a" hidden>
+                                <p>
+                                    No. There are no accounts, no passwords and no sign-up forms. You
+                                    pick a room name, and your guests join with just a display name.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <button class="faq-q" type="button" aria-expanded="false">
+                                Do I need to download or install anything?
+                                <span class="faq-mark" aria-hidden="true">+</span>
+                            </button>
+                            <div class="faq-a" hidden>
+                                <p>
+                                    No. ArenaMeet runs entirely in a modern web browser — Chrome, Edge,
+                                    Firefox or Safari — on desktop and mobile.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <button class="faq-q" type="button" aria-expanded="false">
+                                How do I invite people to my room?
+                                <span class="faq-mark" aria-hidden="true">+</span>
+                            </button>
+                            <div class="faq-a" hidden>
+                                <p>
+                                    Use the Share button at the top of the room to copy the room link,
+                                    then send it to anyone. Whoever has the link can join — there is no
+                                    guest list.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <button class="faq-q" type="button" aria-expanded="false">
+                                Is there a time limit on calls?
+                                <span class="faq-mark" aria-hidden="true">+</span>
+                            </button>
+                            <div class="faq-a" hidden>
+                                <p>
+                                    Calls themselves have no fixed length. The free video plan includes
+                                    5,000 video minutes per month; when those run out, new calls are
+                                    refused until the allowance resets on the 1st of the next month.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <button class="faq-q" type="button" aria-expanded="false">
+                                Does ArenaMeet record my calls?
+                                <span class="faq-mark" aria-hidden="true">+</span>
+                            </button>
+                            <div class="faq-a" hidden>
+                                <p>
+                                    No. ArenaMeet does not record audio, video or chat. Media is relayed
+                                    for the live call only and is not stored by the app. See the privacy
+                                    page for the full details.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <button class="faq-q" type="button" aria-expanded="false">
+                                Which browsers and devices work?
+                                <span class="faq-mark" aria-hidden="true">+</span>
+                            </button>
+                            <div class="faq-a" hidden>
+                                <p>
+                                    The latest versions of Chrome, Edge, Firefox and Safari, on Windows,
+                                    macOS, Linux, Android and iOS. Camera and microphone need a secure
+                                    connection (HTTPS), which the hosted site provides.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <button class="faq-q" type="button" aria-expanded="false">
+                                What happens if I join with my camera or microphone off?
+                                <span class="faq-mark" aria-hidden="true">+</span>
+                            </button>
+                            <div class="faq-a" hidden>
+                                <p>
+                                    You still join the room and appear as a named tile, and you can turn
+                                    your camera or microphone on later from the control bar. If the
+                                    browser blocks permission, the join succeeds muted instead of failing.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="wrap">
+                <div class="footer-brand">
+                    <img src="/images/logo.svg" alt="ArenaMeet" />
+                    <p>Real-time video meetings, without limits. No account, no download.</p>
+                </div>
+                <div class="footer-links">
+                    <div>
+                        <h4>Product</h4>
+                        <ul>
+                            <li><a href="/newroom">Start a Meeting</a></li>
+                            <li><a href="#features">Features</a></li>
+                            <li><a href="#how-it-works">How it works</a></li>
+                            <li><a href="#faq">FAQ</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Legal</h4>
+                        <ul>
+                            <li><a href="/privacy">Privacy</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="footer-copy">© 2026 Anish Kumar — ArenaMeet 1.0.0. All rights reserved.</p>
+            </div>
+        </footer>
+    </body>
+</html>

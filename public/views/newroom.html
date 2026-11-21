@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>New Room - ArenaMeet</title>
+        <meta
+            name="description"
+            content="Create a new ArenaMeet video room. Pick a name, share the link, and meet in your browser."
+        />
+        <link rel="icon" type="image/svg+xml" href="/images/logo.svg" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap"
+        />
+        <link rel="stylesheet" href="/css/base.css" />
+        <link rel="stylesheet" href="/css/site.css" />
+        <script defer src="/js/site.js"></script>
+    </head>
+    <body class="site">
+        <header class="site-nav">
+            <div class="wrap">
+                <a class="site-brand" href="/">
+                    <img src="/images/logo.svg" alt="ArenaMeet" />
+                    <span>ArenaMeet</span>
+                </a>
+                <nav class="site-links" aria-label="Main navigation">
+                    <a href="/#features">Features</a>
+                    <a href="/#how-it-works">How it works</a>
+                    <a href="/#faq">FAQ</a>
+                    <a href="/privacy">Privacy</a>
+                </nav>
+                <a class="btn btn-primary" href="/newroom"><span class="btn-label-full">Start a Meeting</span><span class="btn-label-short" aria-hidden="true">Start</span></a>
+            </div>
+        </header>
+
+        <main class="page">
+            <div class="wrap page-narrow">
+                <h1>Create a new room</h1>
+                <p class="lead">
+                    Pick a name for your meeting. Anyone with the room link can join — no account,
+                    no download.
+                </p>
+                <div class="room-box">
+                    <form class="room-form" data-room-form autocomplete="off">
+                        <input
+                            id="newRoomName"
+                            type="text"
+                            maxlength="64"
+                            placeholder="Room name"
+                            aria-label="Room name"
+                        />
+                        <button class="btn btn-primary" type="submit">Create Room</button>
+                        <span class="form-error" hidden></span>
+                    </form>
+                    <div class="form-row">
+                        <button id="regenerateRoomBtn" class="btn btn-ghost" type="button">
+                            Generate a different name
+                        </button>
+                    </div>
+                    <p class="form-note">
+                        Room names can use letters, numbers, spaces and dashes, up to 64 characters.
+                        Your camera and microphone stay off until you choose to join.
+                    </p>
+                </div>
+                <p class="link-list">
+                    <a href="/">Back to home</a> &middot; <a href="/privacy">Privacy</a>
+                </p>
+            </div>
+        </main>
+
+        <footer class="site-footer">
+            <div class="wrap">
+                <div class="footer-brand">
+                    <img src="/images/logo.svg" alt="ArenaMeet" />
+                    <p>Real-time video meetings, without limits. No account, no download.</p>
+                </div>
+                <div class="footer-links">
+                    <div>
+                        <h4>Product</h4>
+                        <ul>
+                            <li><a href="/newroom">Start a Meeting</a></li>
+                            <li><a href="/#features">Features</a></li>
+                            <li><a href="/#how-it-works">How it works</a></li>
+                            <li><a href="/#faq">FAQ</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Legal</h4>
+                        <ul>
+                            <li><a href="/privacy">Privacy</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="footer-copy">© 2026 Anish Kumar — ArenaMeet 1.0.0. All rights reserved.</p>
+            </div>
+        </footer>
+    </body>
+</html>

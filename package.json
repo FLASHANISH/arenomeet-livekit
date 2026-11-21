@@ -1,0 +1,1 @@
+{"dependencies":{"livekit-server-sdk":"^2.20.1"},"description":"ArenaMeet - video rooms on LiveKit Cloud. Squad video rooms. Fast, private, built for teams that play to win.","engines":{"node":">=20"},"name":"arenomeet","private":true,"scripts":{"dev":"node dev.js","test:token":"node scripts/test-token.js"},"type":"commonjs","version":"1.0.0"}

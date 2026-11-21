@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="64" viewBox="0 0 320 64" role="img" aria-label="ArenaMeet">
+  <g fill="none">
+    <path fill="#00E5FF" d="M8 56 L30 8 L52 56 L40 56 L30 30 L20 56 Z"/>
+    <path fill="#7C5CFF" d="M24 44 L36 44 L33 52 L27 52 Z"/>
+    <path fill="#00E5FF" d="M56 12 L60 12 L60 56 L56 56 Z"/>
+  </g>
+  <text x="72" y="42" font-family="Rajdhani, Inter, Arial, sans-serif" font-size="30" font-weight="700" letter-spacing="3" fill="#E6EDF3">ARENAMEET</text>
+</svg>

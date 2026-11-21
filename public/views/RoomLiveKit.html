@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>ArenaMeet - Video Meeting</title>
+        <meta name="description" content="ArenaMeet is a real-time video meeting platform that runs entirely in your browser." />
+        <link rel="icon" type="image/svg+xml" href="/images/logo.svg" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" />
+        <link rel="stylesheet" href="/css/base.css" />
+        <link rel="stylesheet" href="/css/RoomLiveKit.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+        <script defer src="/js/livekit-client.umd.min.js"></script>
+        <script defer src="/js/RoomLiveKit.js"></script>
+    </head>
+    <body class="lk-room">
+        <header class="lk-header">
+            <a class="lk-brand" href="/" title="ArenaMeet home">
+                <img src="/images/logo.svg" alt="ArenaMeet" class="lk-logo" />
+                <span class="lk-brand-name">ArenaMeet</span>
+            </a>
+            <div class="lk-room-info">
+                <span class="lk-room-name" id="roomNameLabel" title="Room name">Room</span>
+                <span class="lk-sep" aria-hidden="true">|</span>
+                <span class="lk-participants" id="participantCount" title="People in this room">
+                    <i class="fa-solid fa-user-group"></i> <span id="participantCountValue">1</span>
+                </span>
+                <span class="lk-sep" aria-hidden="true">|</span>
+                <span class="lk-timer" id="callTimer" title="Call duration">00:00</span>
+                <span class="lk-status" id="connectionStatus" title="Connection status"></span>
+            </div>
+            <div class="lk-header-actions">
+                <button id="shareRoomBtn" class="lk-header-btn" type="button" title="Copy room link">
+                    <i class="fa-solid fa-share-nodes"></i><span>Share</span>
+                </button>
+                <button id="toggleChatBtnTop" class="lk-header-btn" type="button" title="Toggle chat">
+                    <i class="fa-solid fa-message"></i><span>Chat</span>
+                </button>
+            </div>
+        </header>
+
+        <main class="lk-stage">
+            <div id="videoGrid" class="lk-grid" aria-live="polite"></div>
+            <p id="aloneHint" class="lk-alone-hint" hidden>
+                You are the only one here. Share the room link to invite others.
+            </p>
+            <div id="reconnectBanner" class="lk-banner" hidden>Reconnecting to the room...</div>
+        </main>
+
+        <aside id="chatPanel" class="lk-chat" hidden aria-label="Chat">
+            <div class="lk-chat-header">
+                <span><i class="fa-solid fa-message"></i> Chat</span>
+                <button id="closeChatBtn" class="lk-chat-close" type="button" title="Close chat" aria-label="Close chat">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div id="chatMessages" class="lk-chat-messages"></div>
+            <form id="chatForm" class="lk-chat-form" autocomplete="off">
+                <input id="chatInput" type="text" maxlength="1000" placeholder="Type a message..." aria-label="Type a message" />
+                <button type="submit" title="Send message" aria-label="Send message">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </form>
+        </aside>
+
+        <footer class="lk-controls" id="controlsBar">
+            <button id="micBtn" class="lk-control" type="button" title="Mute microphone" aria-pressed="true">
+                <i class="fa-solid fa-microphone"></i>
+            </button>
+            <button id="camBtn" class="lk-control" type="button" title="Turn camera off" aria-pressed="true">
+                <i class="fa-solid fa-video"></i>
+            </button>
+            <button id="screenBtn" class="lk-control" type="button" title="Share screen" aria-pressed="false">
+                <i class="fa-solid fa-display"></i>
+            </button>
+            <button id="chatBtn" class="lk-control" type="button" title="Toggle chat" aria-pressed="false">
+                <i class="fa-solid fa-message"></i>
+            </button>
+            <button id="leaveBtn" class="lk-control lk-leave" type="button" title="Leave room">
+                <i class="fa-solid fa-phone-slash"></i>
+            </button>
+        </footer>
+
+        <div id="joinOverlay" class="lk-overlay">
+            <div class="lk-join-card">
+                <img src="/images/logo.svg" alt="ArenaMeet" class="lk-join-logo" />
+                <h1 class="lk-join-title">Join room</h1>
+                <p class="lk-join-room">Room: <strong id="joinRoomName">...</strong></p>
+                <label class="lk-field" for="displayNameInput">Your name</label>
+                <input id="displayNameInput" type="text" maxlength="64" placeholder="e.g. Alex" autocomplete="name" />
+                <div class="lk-join-toggles">
+                    <label class="lk-toggle">
+                        <input id="joinMicToggle" type="checkbox" checked /> Microphone on
+                    </label>
+                    <label class="lk-toggle">
+                        <input id="joinCamToggle" type="checkbox" checked /> Camera on
+                    </label>
+                </div>
+                <button id="joinBtn" class="lk-join-btn" type="button">Join room</button>
+                <p id="joinError" class="lk-error" role="alert" hidden></p>
+                <p class="lk-join-note">No account, no download. Your camera and microphone stay in your browser until you join.</p>
+            </div>
+        </div>
+
+        <div id="leftScreen" class="lk-overlay" hidden>
+            <div class="lk-join-card">
+                <img src="/images/logo.svg" alt="ArenaMeet" class="lk-join-logo" />
+                <h1 class="lk-join-title">You left the room</h1>
+                <p class="lk-join-note">Thanks for meeting with ArenaMeet.</p>
+                <button id="rejoinBtn" class="lk-join-btn" type="button">Rejoin room</button>
+                <a class="lk-home-link" href="/">Back to home</a>
+            </div>
+        </div>
+
+        <div id="toast" class="lk-toast" role="status" hidden></div>
+    </body>
+</html>
