@@ -22,6 +22,10 @@
     const MAX_NAME_LENGTH = 64;
     const VALUE_RE = /^[A-Za-z0-9][A-Za-z0-9 _.\-]*$/;
 
+    // Microphone capture: explicit echo cancellation / noise suppression so
+    // the voice comes through clean on phones and laptops.
+    const MIC_OPTIONS = { echoCancellation: true, noiseSuppression: true, autoGainControl: true };
+
     const $ = (id) => document.getElementById(id);
     const grid = $('videoGrid');
     const joinOverlay = $('joinOverlay');
@@ -212,7 +216,11 @@
             tile.classList.remove('lk-cam-off');
             return;
         }
-        // Audio: attach to a dedicated (invisible) audio element.
+        // Audio: attach to a dedicated (invisible) audio element — remote
+        // participants only. NEVER attach the local microphone track: it
+        // would play your own voice back through your speakers and feed it
+        // into the mic again (echo / repeat loop that never stops).
+        if (participant.isLocal) return;
         const audioId = 'audio-' + participant.identity;
         let audio = document.getElementById(audioId);
         if (!audio) {
@@ -336,7 +344,14 @@
             if (!room) return;
             const enabled = !room.localParticipant.isMicrophoneEnabled;
             try {
-                await room.localParticipant.setMicrophoneEnabled(enabled);
+                await room.localParticipant.setMicrophoneEnabled(enabled, MIC_OPTIONS);
+                // Fresh user gesture: re-unlock remote audio playback in case
+                // an earlier play() was blocked by the browser.
+                try {
+                    await room.startAudio();
+                } catch (err) {
+                    // Playback stays unlocked on the next click.
+                }
             } catch (err) {
                 showToast('Could not access the microphone.');
                 return;
@@ -409,9 +424,50 @@
         $('rejoinBtn').addEventListener('click', () => window.location.reload());
     }
 
+    // Stop every local track (camera, mic, screen share) and release the
+    // devices. room.disconnect() closes the connection but does NOT stop
+    // local tracks, so without this the browser keeps showing the
+    // camera/mic as on after leaving.
+    function stopAllLocalTracks() {
+        if (!room) return;
+        const localTracks = [];
+        room.localParticipant.trackPublications.forEach((publication) => {
+            if (publication.track) localTracks.push(publication.track);
+        });
+        localTracks.forEach((track) => {
+            try {
+                track.stop();
+            } catch (err) {
+                // Already stopped.
+            }
+        });
+    }
+
+    async function unpublishAllLocalTracks() {
+        if (!room) return;
+        const local = room.localParticipant;
+        const localTracks = [];
+        local.trackPublications.forEach((publication) => {
+            if (publication.track) localTracks.push(publication.track);
+        });
+        try {
+            await local.unpublishTracks(localTracks);
+        } catch (err) {
+            // Fall through — the tracks are stopped directly below.
+        }
+        localTracks.forEach((track) => {
+            try {
+                track.stop();
+            } catch (err) {
+                // Already stopped.
+            }
+        });
+    }
+
     async function leaveRoom() {
         stopTimer();
         if (room) {
+            await unpublishAllLocalTracks();
             try {
                 await room.disconnect();
             } catch (err) {
@@ -544,18 +600,36 @@
             });
             room.on(SDK.RoomEvent.Disconnected, () => {
                 stopTimer();
+                // Release the camera/mic even on an unexpected disconnect,
+                // otherwise the browser keeps showing them as on.
+                stopAllLocalTracks();
                 if (!leftScreen.hidden) return;
                 showToast('You were disconnected from the room.');
             });
 
             await room.connect(url, token);
 
+            // Unlock audio/video playback. Browsers block autoplay until a
+            // user gesture; the Join click is that gesture. Without this,
+            // a remote track that subscribes later can stay silent because
+            // its play() was rejected (and nothing retries it).
+            try {
+                await room.startAudio();
+            } catch (err) {
+                // Re-unlocked on the next click (mic toggle calls it too).
+            }
+            try {
+                await room.startVideo();
+            } catch (err) {
+                // Same as above.
+            }
+
             // Publish local camera/mic. A denied permission joins muted
             // instead of failing the whole join.
             let micOn = startWithMic;
             let camOn = startWithCam;
             try {
-                await room.localParticipant.setMicrophoneEnabled(startWithMic);
+                await room.localParticipant.setMicrophoneEnabled(startWithMic, MIC_OPTIONS);
             } catch (err) {
                 micOn = false;
                 showToast('Microphone is off — permission was not granted.');
@@ -570,8 +644,6 @@
             // Local tiles (camera + screen share when it appears).
             const localTile = getOrCreateTile(room.localParticipant, SDK.Track.Source.Camera);
             if (!camOn) localTile.classList.add('lk-cam-off');
-            const micPub = room.localParticipant.getTrackPublication(SDK.Track.Source.Microphone);
-            if (micPub && micPub.track) attachTrack(micPub.track, room.localParticipant);
             const camPub = room.localParticipant.getTrackPublication(SDK.Track.Source.Camera);
             if (camPub && camPub.track) attachTrack(camPub.track, room.localParticipant);
             room.remoteParticipants.forEach(handleExistingPublications);

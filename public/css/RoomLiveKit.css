@@ -176,7 +176,9 @@
 .lk-video {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    /* contain, not cover: the whole camera frame must stay visible (full
+       face on laptop, full portrait frame on phone). cover crops it. */
+    object-fit: contain;
     background: #000;
     display: block;
 }
@@ -606,6 +608,13 @@
 
     .lk-grid {
         grid-template-columns: 1fr;
+    }
+
+    /* Phone: camera tiles are portrait (like a phone screen) so a portrait
+       camera frame shows full-size instead of a cropped landscape strip.
+       Screen-share tiles stay 16:9. */
+    .lk-tile:not(.lk-tile-screen) {
+        aspect-ratio: 3 / 4;
     }
 
     .lk-control {
